@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "268863375615",
+    "project_id": "turbovenom-4951b",
+    "storage_bucket": "turbovenom-4951b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268863375615:android:b5884c9cc74db8e5cf24ca",
+        "android_client_info": {
+          "package_name": "com.example.turbovenom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "268863375615-2bj46mvj1qn70guoinnsteqdttavibgu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeW_68Id91ITG3sEOJ9XyZ1LgsIOUgHts"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "268863375615-2bj46mvj1qn70guoinnsteqdttavibgu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
