@@ -63,7 +63,7 @@ AddNewPart extends AppCompatActivity {
 
     public void add(View view) {
         // check if any field is empty
-        String id , brand, size, modelyear, category, photo;
+        String id, brand, size, modelyear, category, photo;
         id = etId.getText().toString();
         brand = etBrand.getText().toString();
         size = etAddSize.getText().toString();
@@ -74,13 +74,13 @@ AddNewPart extends AppCompatActivity {
             photo = "no_image";
         else photo = ivPhoto.getDrawable().toString();
 
-        if (id.trim().isEmpty()||brand.trim().isEmpty() || size.trim().isEmpty() || modelyear.trim().isEmpty() ||
+        if (id.trim().isEmpty() || brand.trim().isEmpty() || size.trim().isEmpty() || modelyear.trim().isEmpty() ||
                 category.trim().isEmpty() || photo.trim().isEmpty()) {
             Toast.makeText(this, " fields are empty", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Part part = new Part(Integer.parseInt(id) ,Integer.parseInt(brand), Integer.parseInt(size), Integer.parseInt(modelyear), Integer.parseInt(photo),psCategory.valueOf(category));
+        Part part = new Part(Integer.parseInt(id), Integer.parseInt(brand), Integer.parseInt(size), Integer.parseInt(modelyear), Integer.parseInt(photo), psCategory.valueOf(category));
         fbs.getFirestore().collection("allparts")
                 .add(part)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -124,8 +124,8 @@ AddNewPart extends AppCompatActivity {
             }
         }
     }
-    private void uploadImage()
-    {
+
+    private void uploadImage() {
         if (filePath != null) {
 
             // Code for showing progressDialog while uploading
@@ -135,71 +135,77 @@ AddNewPart extends AppCompatActivity {
             progressDialog.show();
 
             // Defining the child of storageReference
-            StorageReference ref
-                    = storageReference
-                    .child(
-                            "images/"
-                                    + UUID.randomUUID().toString());
+            //  String fileNameStr = filePath.toString().substring(filePath.toString().lastIndexOf("/")+1);
 
+            try {
+                final StorageReference ref
+                        = storageReference
+                        .child(
+                                "images/"
+                                        + filePath.getLastPathSegment());
+                //
+                // .3
+                // + UUID.randomUUID().toString());
+
+                ref.putFile(filePath)
+                        .addOnSuccessListener(
+                                new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+                                    @Override
+                                    public void onSuccess(
+                                            UploadTask.TaskSnapshot taskSnapshot) {
+
+                                        // Image uploaded successfully
+                                        // Dismiss dialog
+                                        progressDialog.dismiss();
+                                        Toast
+                                                .makeText(AddNewPart.this,
+                                                        "Image Uploaded!!",
+                                                        Toast.LENGTH_SHORT)
+                                                .show();
+                                        refAfterSuccessfullUpload = ref.toString();
+                                    }
+                                })
+
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+                                // Error, Image not uploaded
+                                progressDialog.dismiss();
+                                Toast
+                                        .makeText(AddNewPart.this,
+                                                "Failed " + e.getMessage(),
+                                                Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+                        })
+                        .addOnProgressListener(
+                                new OnProgressListener<UploadTask.TaskSnapshot>() {
+
+                                    // Progress Listener for loading
+                                    // percentage on the dialog box
+                                    @Override
+                                    public void onProgress(
+                                            UploadTask.TaskSnapshot taskSnapshot) {
+                                        double progress
+                                                = (100.0
+                                                * taskSnapshot.getBytesTransferred()
+                                                / taskSnapshot.getTotalByteCount());
+                                        progressDialog.setMessage(
+                                                "Uploaded "
+                                                        + (int) progress + "%");
+                                    }
+                                });
+            } catch (Exception ex) {
+                Log.e("uploadImage: reference", ex.getMessage());
+            }
+
+            //  filePath.toString().substring(filePath.toString().lastIndexOf("/")+1);
             // adding listeners on upload
             // or failure of image
-            ref.putFile(filePath)
-                    .addOnSuccessListener(
-                            new OnSuccessListener<UploadTask.TaskSnapshot>() {
 
-                                @Override
-                                public void onSuccess(
-                                        UploadTask.TaskSnapshot taskSnapshot)
-                                {
 
-                                    // Image uploaded successfully
-                                    // Dismiss dialog
-                                    progressDialog.dismiss();
-                                    Toast
-                                            .makeText(AddNewPart.this,
-                                                    "Image Uploaded!!",
-                                                    Toast.LENGTH_SHORT)
-                                            .show();
-                                }
-                            })
-
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e)
-                        {
-
-                            // Error, Image not uploaded
-                            progressDialog.dismiss();
-                            Toast
-                                    .makeText(AddNewPart.this,
-                                            "Failed " + e.getMessage(),
-                                            Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-                    })
-                    .addOnProgressListener(
-                            new OnProgressListener<UploadTask.TaskSnapshot>() {
-
-                                // Progress Listener for loading
-                                // percentage on the dialog box
-                                @Override
-                                public void onProgress(
-                                        UploadTask.TaskSnapshot taskSnapshot)
-                                {
-                                    double progress
-                                            = (100.0
-                                            * taskSnapshot.getBytesTransferred()
-                                            / taskSnapshot.getTotalByteCount());
-                                    progressDialog.setMessage(
-                                            "Uploaded "
-                                                    + (int)progress + "%");
-                                }
-                            });
         }
     }
-
-
-
-
-
 }
