@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -40,6 +41,8 @@ AddNewPart extends AppCompatActivity {
     private FirebaseServices fbs;
     private Uri filePath;
     StorageReference storageReference;
+    private String refAfterSuccessfullUpload = null;
+    Button BtnAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,7 @@ AddNewPart extends AppCompatActivity {
         fbs = FirebaseServices.getInstance();
         spPartCategorey.setAdapter(new ArrayAdapter<psCategory>(this, android.R.layout.simple_spinner_item, psCategory.values()));
         storageReference = fbs.getStorage().getReference();
+       BtnAdd = findViewById(R.id.BtnAdd);
     }
 
     public void add(View view) {
@@ -207,5 +211,10 @@ AddNewPart extends AppCompatActivity {
 
 
         }
+    }
+
+    public void gotoAllPartsAvtivity(View view) {
+        Intent i = new Intent(this, AllPartsActivity.class);
+        startActivity(i);
     }
 }

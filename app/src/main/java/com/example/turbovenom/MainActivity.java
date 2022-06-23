@@ -3,6 +3,7 @@ package com.example.turbovenom;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -17,8 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity<auth> extends AppCompatActivity {
 
-    private  EditText etUsername, etPassword;
-    private FirebaseAuth auth ;
+    private EditText etUsername, etPassword;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,4 +63,13 @@ public class MainActivity<auth> extends AppCompatActivity {
                 });
     }
 
+    public void signup(View view) {
+        Intent i = new Intent(this, SignupActivity.class);
+        startActivity(i);
+    }
+
+    public void gotoAddNewPart(View view) {
+        Intent i = new Intent(this, AddNewPart.class);
+        startActivity(i);
+    }
 }
